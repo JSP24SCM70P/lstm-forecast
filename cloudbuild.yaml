@@ -1,0 +1,13 @@
+steps: 
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/lstm-forecast-420421/lstm-forecast', '.']
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/lstm-forecast-420421/lstm-forecast']
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'lstm-forecast', '--image', 'gcr.io/lstm-forecast-420421/lstm-forecast', '--region', 'us-central1', '--platform', 'managed','--port','8080']
+images:
+- gcr.io/lstm-forecast-420421/lstm-forecast
