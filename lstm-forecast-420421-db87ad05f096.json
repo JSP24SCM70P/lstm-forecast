@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "lstm-forecast-420421",
+  "private_key_id": "db87ad05f09610662c2dad8c03da078989e7ac80",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCsiMXmF2HU3lB3\nhSRX1qZixnc1jVtgPlt4raCO6io53JvNF5S9O11AqGBm4Mq9EDIVPORuwwHgKyK9\n2r2lPFIA1aBW+0ezVQZ/vk+JcEe0ID23E5O3GI+HJidc5NWuxkV2zRFiuxiNynut\nDEwMdAI6U6t7JLl5WMQHb/NfTVVLnOlm2XgowJFt/p7Y4b+iYzp9rtTGJ4MfPYS5\nIPdnjNwx24o/L/3fn1RLTMceJILnDa4Js/fGU1ZgriySyQcaTPwrYbyFf1l+dB1V\nXyWQpUni+t1Gsk7I8UxsUbIpE06ysMkPt6tjwgLXQAZm7H2xxAQaCLikcJxc6pD8\nUq9nIGRJAgMBAAECggEAHGbCbwM72UsEY3xhFG2TA7EIeCIOH+x76cRpKQV+kHpS\nkmMWmsTuL6HYBq9r6E4FdI4Ky3nh8ekf5bFfpRbmJ9mCtLbWIXz2XipxlN4NC6eA\nCUZZe1s5a0W6VpYb39KnJiyRN1e1rceebsjWrvkc0cWqtZGAz6svT8sbvL0x9Il5\nePDRHSwRY82Lr9OqH+TR9eYapa4NyzERWHbCVPmXGe48FPAn3yq8g2N5skReJsok\n5VPTGohnJe4kHd5Ae9vC0RwDBqT12f6+u9vIKPaxVorhxVkNjInPX2GIiGaZgtEI\nNZUyX6SHPPpRicCLwM+01oDi5Xgfuf1JaOmQ9T/iBQKBgQDbEIA5U/PEZ9EOcYXe\nv8DuXxBNpNJOBHEjbH+eO6CRJ1MYhRdtRpJtNPCWDPgVYWfIJQXwlhvWvWoNGAYQ\nBEVjK20MtUwRMN2zeiZvavip7/E9+6buivyMgXe0RE/HCa7ntgVXxQ2hC5BKLorE\n1usdoxAWtEv7LofyC3KA89QXnQKBgQDJn+Kt+YLdOPwC2rAaA0Hn0lPKZxAty8zW\nAyGrqWULf7mhGtFZ40GHze6VP1Nw6uacJgaSC4Zdg0KOQrWrFW490PgwiUp44meq\ntmwvs6VF+q9lKYfaAgTE63b9AuEcYYn37SFdMVNibiY3YvrrdJ2SqjW1c/1gV/D1\nd0S28mu9nQKBgQDSKcB6P1qMQPVFoA/IpbpYdgdUFh5VDtnkHEFK8vWWjF2iFn1l\nLuFnt/RgYEzZZjuEvlA2gixvFgVaToPydcaD37OdD4nMrE7l0vhwx/WMQ0/0ISwD\nin/D5KmM3kSTNW0Bi5UQoVH0AP4KzSAAvBeQtVHIFm0Wq4ts4SKXKFV/2QKBgDkU\n1N4gN5Zd3asJMrYKmgwBlctFpmTwv8sPE+c/i+XXgTxFFWP3XMQP3y3NwdfECQnI\nEjAipyWuVZdk9326EX3avYkwNS9IGcVQ5AwVNgM715AyU826qJL/fq5etFCOpLrW\nHY3+uvaw7IzdruAeIcY1/gKjFebCvusfmwqYUzxZAoGBANcvX/NY3dZB4fRUBNtj\nxxXhxFmt5j81ftFsgQDeJHpErYjuL8atxSjqSzNcV6tHFbGKnD3h1/7/59ieK9eL\nSL0jAEn5kc5AUR+0U/bJu4sIcnKYW9SycdHrMuI+xTorsWm7YvF4L5BB4glWxHM3\nYux+Ids9R+2ARfYR+G++RAAo\n-----END PRIVATE KEY-----\n",
+  "client_email": "lstm-forecast-service-acc@lstm-forecast-420421.iam.gserviceaccount.com",
+  "client_id": "100956694413628412174",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/lstm-forecast-service-acc%40lstm-forecast-420421.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
