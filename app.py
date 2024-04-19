@@ -27,17 +27,18 @@ from tensorflow.python.keras.layers import LSTM
 #from tensorflow.keras.layers import Input, Dense, LSTM, Dropout
 # Import required storage package from Google Cloud Storage
 from google.cloud import storage
-from google.oauth2 import service_account
+#from google.oauth2 import service_account
 
 # Initilize flask app
 app = Flask(__name__)
 # Handles CORS (cross-origin resource sharing)
 CORS(app)
 # Initlize Google cloud storage client
-credentials = service_account.Credentials.from_service_account_file("D:\Education\mastersIITC\spring 24\spm_jinit\hw5\code\LSTM-forecast\lstm-forecast-420421-db87ad05f096.json")
-client = storage.Client(credentials=credentials)
+#credentials = service_account.Credentials.from_service_account_file("D:\Education\mastersIITC\spring 24\spm_jinit\hw5\code\LSTM-forecast\lstm-forecast-420421-db87ad05f096.json")
+client = storage.Client()
 
-LOCAL_IMAGE_PATH = "D:\Education\mastersIITC\spring 24\spm_jinit\hw5\code\LSTM-forecast\static\images\\"
+LOCAL_IMAGE_PATH = "static/images/"
+#LOCAL_IMAGE_PATH = "D:\Education\mastersIITC\spring 24\spm_jinit\hw5\code\LSTM-forecast\static\images\\"
 BASE_IMAGE_PATH = os.environ.get(
         'BASE_IMAGE_PATH', 'https://storage.googleapis.com/lstm_jspscm70p/')
 NO_DATA_URL = BASE_IMAGE_PATH + "no_data.png"
