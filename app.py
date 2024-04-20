@@ -174,8 +174,6 @@ def forecast():
     #LOCAL_IMAGE_PATH = "D:\Education\mastersIITC\spring 24\spm_jinit\hw5\code\LSTM-forecast\static\images\\"
 
     # Creating the image path for model loss, LSTM generated image and all issues data image
-    if 'issue_type' in body:
-        type = body['issue_type']
     CREATED_ISSUES_MAX_DAY = "created_issues_max_day_" + type + "_" + repo_name + ".png"
     CREATED_ISSUES_MAX_DAY_URL = BASE_IMAGE_PATH + CREATED_ISSUES_MAX_DAY
 
@@ -250,68 +248,67 @@ def forecast():
     # Save the figure in /static/images folder
     plt.savefig(LOCAL_IMAGE_PATH + ALL_ISSUES_DATA_IMAGE_NAME)
 
-    month_names = ['January', 'February', 'March', 'April', 'May', 'June','July','August','Septeber', 'October', 'November','December']
-    day_names = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    df_issues = pd.DataFrame(issues)
-    df_issues['created_at'] = pd.to_datetime(df_issues['created_at'], errors='coerce')
-    df_issues_count = df_issues.groupby(df_issues['created_at'].dt.day_name()).size()
-    df_issues_count = pd.DataFrame({'Created_On': df_issues_count.index, 'Count': df_issues_count.values})
-    df_issues_count = df_issues_count.groupby(['Created_On']).sum().reindex(day_names)
+    if 'issue_type' not in body:
+        month_names = ['January', 'February', 'March', 'April', 'May', 'June','July','August','Septeber', 'October', 'November','December']
+        day_names = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        df_issues = pd.DataFrame(issues)
+        df_issues['created_at'] = pd.to_datetime(df_issues['created_at'], errors='coerce')
+        df_issues_count = df_issues.groupby(df_issues['created_at'].dt.day_name()).size()
+        df_issues_count = pd.DataFrame({'Created_On': df_issues_count.index, 'Count': df_issues_count.values})
+        df_issues_count = df_issues_count.groupby(['Created_On']).sum().reindex(day_names)
 
-    # Plotting
-    plt.figure(figsize=(12, 7))
-    plt.plot(df_issues_count['Count'], label='Issues')
-    plt.title('day of the week maximum number of issues created')
-    if 'issue_type' in body:
-        axs.set_ylabel("Number of "+body['issue_type'])
-    else:
-        axs.set_ylabel('Number of Issues')
-    plt.xlabel('Days')
-    plt.savefig(LOCAL_IMAGE_PATH + CREATED_ISSUES_MAX_DAY)
-
-
-    df_issues['closed_at'] = pd.to_datetime(df_issues['closed_at'], errors='coerce')
-    df_issues_close_count = df_issues.groupby(df_issues['closed_at'].dt.day_name()).size()
-    df_issues_close_count = pd.DataFrame({'Closed_On': df_issues_close_count.index, 'Count': df_issues_close_count.values})
-    df_issues_close_count.set_index('Closed_On', inplace = True)
-    df_issues_close_count = df_issues_close_count.reindex(day_names, fill_value=0)
-
-    # Plotting
-    plt.figure(figsize=(12, 7))
-    plt.plot(df_issues_close_count['Count'], label='Issues')
-    plt.title('day of the week maximum number of issues closed')
-    if 'issue_type' in body:
-        axs.set_ylabel("Number of "+body['issue_type'])
-    else:
-        axs.set_ylabel('Number of Issues')
-    plt.xlabel('Days')
-    plt.savefig(LOCAL_IMAGE_PATH + CLOSED_ISSUES_MAX_DAY)
+        # Plotting
+        plt.figure(figsize=(12, 7))
+        plt.plot(df_issues_count['Count'], label='Issues')
+        plt.title('day of the week maximum number of issues created')
+        if 'issue_type' in body:
+            axs.set_ylabel("Number of "+body['issue_type'])
+        else:
+            axs.set_ylabel('Number of Issues')
+        plt.xlabel('Days')
+        plt.savefig(LOCAL_IMAGE_PATH + CREATED_ISSUES_MAX_DAY)
 
 
-    
-    df_issues_month = pd.DataFrame(issues)
-    df_issues_month['closed_at'] = pd.to_datetime(df_issues_month['closed_at'], errors='coerce')
-    df_issues_close_count_month = df_issues_month.groupby(df_issues_month['closed_at'].dt.month_name()).size()
-    df_issues_close_count_month = pd.DataFrame({'Closed_On': df_issues_close_count_month.index, 'Count': df_issues_close_count_month.values})
-    df_issues_close_count_month.set_index('Closed_On', inplace = True)
-    df_issues_close_count_month = df_issues_close_count_month.reindex(month_names, fill_value=0)
-    # Plotting
-    plt.figure(figsize=(12, 7))
-    plt.plot(df_issues_close_count_month['Count'], label='Issues')
-    plt.title('month of the year that has maximum number of issues closed')
-    if 'issue_type' in body:
-        axs.set_ylabel("Number of "+body['issue_type'])
-    else:
-        axs.set_ylabel('Number of Issues')
-    plt.xlabel('Months')
-    plt.savefig(LOCAL_IMAGE_PATH + CLOSED_ISSUES_MAX_MONTH)
+        df_issues['closed_at'] = pd.to_datetime(df_issues['closed_at'], errors='coerce')
+        df_issues_close_count = df_issues.groupby(df_issues['closed_at'].dt.day_name()).size()
+        df_issues_close_count = pd.DataFrame({'Closed_On': df_issues_close_count.index, 'Count': df_issues_close_count.values})
+        df_issues_close_count.set_index('Closed_On', inplace = True)
+        df_issues_close_count = df_issues_close_count.reindex(day_names, fill_value=0)
+
+        # Plotting
+        plt.figure(figsize=(12, 7))
+        plt.plot(df_issues_close_count['Count'], label='Issues')
+        plt.title('day of the week maximum number of issues closed')
+        if 'issue_type' in body:
+            axs.set_ylabel("Number of "+body['issue_type'])
+        else:
+            axs.set_ylabel('Number of Issues')
+        plt.xlabel('Days')
+        plt.savefig(LOCAL_IMAGE_PATH + CLOSED_ISSUES_MAX_DAY)
+
+
+        
+        df_issues_month = pd.DataFrame(issues)
+        df_issues_month['closed_at'] = pd.to_datetime(df_issues_month['closed_at'], errors='coerce')
+        df_issues_close_count_month = df_issues_month.groupby(df_issues_month['closed_at'].dt.month_name()).size()
+        df_issues_close_count_month = pd.DataFrame({'Closed_On': df_issues_close_count_month.index, 'Count': df_issues_close_count_month.values})
+        df_issues_close_count_month.set_index('Closed_On', inplace = True)
+        df_issues_close_count_month = df_issues_close_count_month.reindex(month_names, fill_value=0)
+        # Plotting
+        plt.figure(figsize=(12, 7))
+        plt.plot(df_issues_close_count_month['Count'], label='Issues')
+        plt.title('month of the year that has maximum number of issues closed')
+        if 'issue_type' in body:
+            axs.set_ylabel("Number of "+body['issue_type'])
+        else:
+            axs.set_ylabel('Number of Issues')
+        plt.xlabel('Months')
+        plt.savefig(LOCAL_IMAGE_PATH + CLOSED_ISSUES_MAX_MONTH)
     
 
     # Uploads an images into the google cloud storage bucket
     bucket = client.get_bucket(BUCKET_NAME)
-    new_blob = bucket.blob(CLOSED_ISSUES_MAX_MONTH)
-    new_blob.upload_from_filename(
-        filename=LOCAL_IMAGE_PATH + CLOSED_ISSUES_MAX_MONTH)
+    
     new_blob = bucket.blob(MODEL_LOSS_IMAGE_NAME)
     new_blob.upload_from_filename(
         filename=LOCAL_IMAGE_PATH + MODEL_LOSS_IMAGE_NAME)
@@ -321,22 +318,33 @@ def forecast():
     new_blob = bucket.blob(LSTM_GENERATED_IMAGE_NAME)
     new_blob.upload_from_filename(
         filename=LOCAL_IMAGE_PATH + LSTM_GENERATED_IMAGE_NAME)
-    new_blob = bucket.blob(CREATED_ISSUES_MAX_DAY)
-    new_blob.upload_from_filename(
-        filename=LOCAL_IMAGE_PATH + CREATED_ISSUES_MAX_DAY)
-    new_blob = bucket.blob(CLOSED_ISSUES_MAX_DAY)
-    new_blob.upload_from_filename(
-        filename=LOCAL_IMAGE_PATH + CLOSED_ISSUES_MAX_DAY)
+    if 'issue_type' not in body:
+        new_blob = bucket.blob(CREATED_ISSUES_MAX_DAY)
+        new_blob.upload_from_filename(
+            filename=LOCAL_IMAGE_PATH + CREATED_ISSUES_MAX_DAY)
+        new_blob = bucket.blob(CLOSED_ISSUES_MAX_DAY)
+        new_blob.upload_from_filename(
+            filename=LOCAL_IMAGE_PATH + CLOSED_ISSUES_MAX_DAY)
+        new_blob = bucket.blob(CLOSED_ISSUES_MAX_MONTH)
+        new_blob.upload_from_filename(
+        filename=LOCAL_IMAGE_PATH + CLOSED_ISSUES_MAX_MONTH)
 
     # Construct the response
-    json_response = {
-        "model_loss_image_url": MODEL_LOSS_URL,
-        "lstm_generated_image_url": LSTM_GENERATED_URL,
-        "all_issues_data_image": ALL_ISSUES_DATA_URL,
-        "created_issues_max_day": CREATED_ISSUES_MAX_DAY_URL,
-        "closed_issues_max_day": CLOSED_ISSUES_MAX_DAY_URL,
-        "closed_issues_max_month": CLOSED_ISSUES_MAX_MONTH_URL
-    }
+    if 'issue_type' not in body:
+        json_response = {
+            "model_loss_image_url": MODEL_LOSS_URL,
+            "lstm_generated_image_url": LSTM_GENERATED_URL,
+            "all_issues_data_image": ALL_ISSUES_DATA_URL,
+            "created_issues_max_day": CREATED_ISSUES_MAX_DAY_URL,
+            "closed_issues_max_day": CLOSED_ISSUES_MAX_DAY_URL,
+            "closed_issues_max_month": CLOSED_ISSUES_MAX_MONTH_URL
+        }
+    else:
+        json_response = {
+            "model_loss_image_url": MODEL_LOSS_URL,
+            "lstm_generated_image_url": LSTM_GENERATED_URL,
+            "all_issues_data_image": ALL_ISSUES_DATA_URL
+        }
     # Returns image url back to flask microservice
     return jsonify(json_response)
 
