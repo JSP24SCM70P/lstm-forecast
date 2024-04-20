@@ -27,7 +27,7 @@ from tensorflow.python.keras.layers import LSTM
 #from tensorflow.keras.layers import Input, Dense, LSTM, Dropout
 # Import required storage package from Google Cloud Storage
 from google.cloud import storage
-#from google.oauth2 import service_account
+from google.oauth2 import service_account
 
 # Initilize flask app
 app = Flask(__name__)
@@ -61,6 +61,17 @@ def build_actual_response(response):
                          "PUT, GET, POST, DELETE, OPTIONS")
     return response
 
+def no_data():
+    json_response = {
+    "model_loss_image_url": NO_DATA_URL,
+    "lstm_generated_image_url": NO_DATA_URL,
+    "all_issues_data_image": NO_DATA_URL,
+    "created_issues_max_day": NO_DATA_URL,
+    "closed_issues_max_day": NO_DATA_URL,
+    "closed_issues_max_month": NO_DATA_URL
+    }
+    return json_response
+
 '''
 API route path is  "/api/forecast"
 This API will accept only POST request
@@ -73,19 +84,13 @@ def forecast():
     type = body["type"]
     repo_name = body["repo"]
     data_frame = pd.DataFrame(issues)
+    if data_frame.empty:
+        json_response = no_data()
+        return jsonify(json_response)
     df1 = data_frame.groupby([type], as_index=False).count()
     if(df1.empty):
-        json_response = {
-        "model_loss_image_url": NO_DATA_URL,
-        "lstm_generated_image_url": NO_DATA_URL,
-        "all_issues_data_image": NO_DATA_URL,
-        "created_issues_max_day": NO_DATA_URL,
-        "closed_issues_max_day": NO_DATA_URL
-        }
+        json_response = no_data()
         return jsonify(json_response)
-        #df1.fillna(0)
-        #d = date.today().strftime('%Y-%m-%d')
-        #df1.loc[0] = [d,0,0,0,0,0]
     df = df1[[type, 'issue_number']]
     df.columns = ['ds', 'y']
 
