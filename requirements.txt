@@ -8,3 +8,7 @@ tensorflow
 keras
 google-cloud-storage
 flask-cors
+pystan==2.19.1.1
+prophet
+statsmodels
+pmdarima
