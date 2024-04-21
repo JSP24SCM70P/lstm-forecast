@@ -37,6 +37,14 @@ from statsmodels.graphics.tsaplots import plot_pacf
 import pmdarima
 from pmdarima.arima.utils import ndiffs
 
+import pystan
+import prophet
+from prophet import Prophet
+from prophet.diagnostics import cross_validation
+from prophet.diagnostics import performance_metrics
+from prophet.plot import plot_cross_validation_metric
+from prophet.plot import plot_plotly, plot_components_plotly
+
 # Initilize flask app
 app = Flask(__name__)
 # Handles CORS (cross-origin resource sharing)
@@ -108,6 +116,19 @@ def error_data_stat():
     }
     return json_response
 
+def error_data_fb():
+    json_response = {
+        "forecast_url": ERROR_DATA_URL,
+        "forecast_component_url": ERROR_DATA_URL
+    }
+    return json_response
+
+def no_data_fb():
+    json_response = {
+        "forecast_url": NO_DATA_URL,
+        "forecast_component_url": NO_DATA_URL
+    }
+    return json_response
 '''
 API route path is  "/api/forecast"
 This API will accept only POST request
@@ -542,6 +563,70 @@ def stat():
     except Exception as e:
         print(e)
         json_response = error_data_stat()
+        return jsonify(json_response)
+
+
+@app.route('/api/fbprophet', methods=['POST'])
+def fbprophet():
+    try:
+        body = request.get_json()
+        issues = body["issues"]
+        type = body["type"]
+        repo_name = body["repo"]
+        data_frame = pd.DataFrame(issues)
+        if data_frame.empty:
+            json_response = no_data_fb()
+            return jsonify(json_response)
+        df1 = data_frame.groupby([type], as_index=False).count()
+        if df1.empty or len(df1) <2:
+            json_response = no_data_fb()
+            return jsonify(json_response)
+        df = df1[[type, 'issue_number']]
+        df.columns = ['ds', 'y']
+        df['ds'] = df['ds'].astype('datetime64[ns]')
+
+        FORECAST_IMG = "fbforecast_" + type + "_" + repo_name + ".png"
+        FORECAST_IMG_URL = BASE_IMAGE_PATH + FORECAST_IMG
+
+        FORECAST_COMPONENTS_IMG = "fbforecastcomponents" + type + "_" + repo_name + ".png"
+        FORECAST_COMPONENTS_IMG_URL = BASE_IMAGE_PATH + FORECAST_COMPONENTS_IMG
+
+        model = Prophet(yearly_seasonality=True, daily_seasonality=True)
+        model.fit(df) 
+        future_dates = model.make_future_dataframe(periods = 365, freq='D')
+        forecast = model.predict(future_dates)
+
+        #plot_plotly(model, forecast)
+        forecast_graph = model.plot(forecast)
+        forecast_components_graph = model.plot_components(forecast)
+
+        forecast_graph.savefig(LOCAL_IMAGE_PATH + FORECAST_IMG)
+        forecast_components_graph.savefig(LOCAL_IMAGE_PATH + FORECAST_COMPONENTS_IMG)
+        # Add your unique Bucket Name if you want to run it local
+        BUCKET_NAME = os.environ.get(
+            'BUCKET_NAME', 'lstm_jspscm70p')
+        
+        # Uploads an images into the google cloud storage bucket
+        bucket = client.get_bucket(BUCKET_NAME)
+        new_blob = bucket.blob(FORECAST_IMG)
+        new_blob.upload_from_filename(
+            filename=LOCAL_IMAGE_PATH + FORECAST_IMG)
+        new_blob = bucket.blob(FORECAST_COMPONENTS_IMG)
+        new_blob.upload_from_filename(
+            filename=LOCAL_IMAGE_PATH + FORECAST_COMPONENTS_IMG)
+        
+
+        # Construct the response
+        
+        json_response = {
+            "forecast_url": FORECAST_IMG_URL,
+            "forecast_component_url": FORECAST_COMPONENTS_IMG_URL
+        }
+        # Returns image url back to flask microservice
+        return jsonify(json_response)
+    except Exception as e:
+        print(e)
+        json_response = error_data_fb()
         return jsonify(json_response)
 
 
