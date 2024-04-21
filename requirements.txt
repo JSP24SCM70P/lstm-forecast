@@ -8,6 +8,7 @@ tensorflow
 keras
 google-cloud-storage
 flask-cors
+holidays==0.24
 pystan==2.19.1.1
 prophet==1.1.1
 statsmodels
