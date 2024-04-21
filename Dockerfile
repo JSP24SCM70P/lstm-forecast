@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.7
 
 ENV PORT 8080
 ENV HOSTDIR 0.0.0.0
